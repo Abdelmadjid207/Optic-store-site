@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+
+{% block title%}
+Searching for Client
+{% endblock %}
+
+{% block content%}
+    {% if user.is_authenticated %}
+    <h1>Clients: Search Results</h1>
+	<form class="d-flex" method="POST" action="{% url 'search_client' %}">
+	  {% csrf_token %}
+	  <input class="form-control me-2" type="search" placeholder="Search for a client" aria-label="Search" name="searchbar">
+	  <button class="btn btn-secondary">Search</button>
+	</form>
+    </br>
+    <h6>Search by date of addition</h6>
+    <form class="d-flex" method="POST" action="{% url 'search_client_date' %}">
+        {% csrf_token %}
+        {{form.as_div}}
+        <input class="form-control me-2" type="date" placeholder="Search for a client" aria-label="Search" name="day">
+        <button type="submit" class="btn btn-secondary">Search</button>
+    </form>
+    </br>
+    <h6>Search by date of last update</h6>
+    <form class="d-flex" method="POST" action="{% url 'search_client_date2' %}">
+        {% csrf_token %}
+        {{form.as_div}}
+        <input class="form-control me-2" type="date" placeholder="Search for a client" aria-label="Search" name="dayd">
+        <button type="submit" class="btn btn-secondary">Search</button>
+    </form>
+	</br></br>
+        {% if s_upd_d %}
+			<table class="table table-hover">
+				<thead class="thead-dark"><th><h3>Updated at {{ dayd }}</h3></th></thead>
+					<tbody>
+						
+						{% for Client in s_upd_d %}
+							<tr><td><a href="/oneclient/{{Client.id}}">{{ Client }}</a></td></tr>
+						{% endfor %}
+					</tbody>
+        {% else %}
+            <h3>You searched for nothing, <a href="/clients">Back</a></h3>
+        {% endif %}
+        
+
+
+
+
+
+
+
+    {% else %}
+        <small><a href="/">Login</a> to view this page</small>
+    {% endif %}
+
+{% endblock %}

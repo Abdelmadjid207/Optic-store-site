@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+
+{% block title%}List of admins{% endblock %}
+
+{% load static %}
+
+{% block content%}
+    {% if user.is_superuser %}
+	<div class="container animate">
+		<h1 style="position: absolute; text-align: left; color: #000000;">Admins</h1>
+		<img src='{% static "admin.png" %}' style="width: 100%; height: 50px; object-fit: cover;" alt="Responsive image">
+		
+	</div>
+	</br>
+    <form method="post" action="{% url 'checkadmin' %}">
+		{% csrf_token %}
+		<table class="table table-hover">
+			<thead class="thead-dark">
+				<tr>
+					<th>User</th>
+					<th>Admin</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for user in users %}
+					<tr>
+						<td>{{ user }}</td>
+						<td>
+							{% if user.id == current_user.id %}
+							<div class="form-check">
+								<input class="form-check-input" type="checkbox" checked="checked" value="{{user.id}}" name="box" hidden="hidden">
+							</div>							
+							{% elif user.is_superuser and user.is_staff %}
+								<div class="form-check">
+									<input class="form-check-input" type="checkbox" checked="checked" value="{{user.id}}" name="box">
+								</div>
+							{% else %}
+								<div class="form-check">
+									<input class="form-check-input" type="checkbox" value="{{user.id}}" name="box">
+								</div>
+							{% endif %}
+						</td>
+					</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+
+		<button type="submit" class="btn btn-secondary">Save</button>
+    </form>
+    {% elif user.is_authenticated %}
+        <small>You don't have the right to view this page</small>
+    {% else %}
+        <small><a href="/">Login</a> to view this page if you're an admin</small>
+    {% endif %}
+{% endblock %}

@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% block title%}
+Clients
+{% endblock %}
+
+
+{% block content%}
+    {% if user.is_authenticated %}
+        <h1>{{one_client}}</h1>
+        <table class="table table-striped">
+            <tbody>
+            <tr><td><strong>Birth Date: </strong>{{one_client.birthdate}}</td></tr>
+            <tr><td><strong>Gender: </strong>{{one_client.gender}}</td></tr>
+            <tr><td><strong>Eye color: </strong>{{one_client.eye_color}}</td></tr>
+            <tr><td><strong>Face shape: </strong>{{one_client.face_shape}}</td></tr>
+            <tr><td><strong>Phone number: </strong>{{one_client.phone_number}}</td></tr>
+            <tr><td><strong>Added at: </strong>{{one_client.added_at}}</td></tr>
+            {% if user.is_superuser %}<tr><td><strong>Added by: </strong>{{one_client.added_by}}</td></tr>{% endif %}
+            <tr><td><strong>Last update: </strong>{{one_client.last_update}}</td></tr>
+            {% if user.is_superuser %}<tr><td><strong>Edited by: </strong>{{one_client.edited_by}}</td></tr>{% endif %}
+            </tbody>
+        </table>
+		<a href="{% url 'edit_client' one_client.id %}", class="btn btn-secondary">Edit</a>
+        <a href="{% url 'cart' one_client.id %}", class="btn btn-secondary">Cart</a>
+        <a href="{% url 'checkout' one_client.id %}", class="btn btn-secondary">Checkout</a>
+        <a href="{% url 'clients' %}", class="btn btn-secondary">Back to list</a>
+        {% if user.is_superuser %}<a href="{% url 'delete_client' one_client.id %}", class="btn btn-danger">Delete</a>{% endif %}
+	{% else %}
+        <small><a href="/">Login</a> to view this page</small>
+    {% endif %}
+
+{% endblock %}

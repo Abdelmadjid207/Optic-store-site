@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+
+<title>Checkout</title>
+
+<body>
+{% block content%}
+        <h2>Optical Store</h2>
+        <h1>Checkout</h1>
+        <h2>Name: {{ client }}</h2></br>
+        <table class="table">
+            
+            <thead>
+                <tr>
+                    <th>Product name</th>
+                    <th>Description</th>
+                    <th>Price per one</th>
+                    <th>Quantity</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in client.cart_set.all %}
+                    <tr>
+                        <td><b>{{ item.product }}</b></td>
+                        <td><b>{{ item.desc }}</b></td>
+                        <td><b>{{ item.product.price }} DA</b></td>
+                        <td><b>{{ item.i_quantity }}</b></td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <h4 style="text-align: right;">Total:</h4>
+        <h3 style="text-align: right;">{{ c_price }} DA</h3>
+        </br></br>
+        <h3>This checkout was printed by: {{ current_user.username }}</h3>
+    </br></br>
+{% endblock %}
+</body>

@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+
+{% block title%}
+Searching for product
+{% endblock %}
+
+{% block content%}
+    {% if user.is_authenticated %}
+    <h1>products: Search Results</h1>
+	</br>
+	<h6>Search by name</h6>
+	<form class="d-flex" method="POST" action="{% url 'search_product' %}">
+	{% csrf_token %}
+	<input class="form-control me-2" type="search" placeholder="Search for a product" aria-label="Search" name="searchbar">
+	<button class="btn btn-secondary">Search</button>
+	</form>
+	</br>
+	<h6>Search by Bar code</h6>
+	<form class="d-flex" method="POST" action="{% url 'search_product_bc' %}">
+	{% csrf_token %}
+	<input class="form-control me-2" type="search" placeholder="Search for a product" aria-label="Search" name="searchbc">
+	<button class="btn btn-secondary">Search</button>
+	</form>
+	</br></br>
+	<table class="table table-hover">
+		<thead class="thead-dark"><th><h3>List of products classified as: {{ categ }}</h3></th></thead>
+			<tbody>
+				
+				{% for product in categ_res %}
+					<tr><td><a href="/oneproduct/{{product.id}}">{{ product }}</a></td></tr>
+				{% endfor %}
+			</tbody>
+	</table>  
+
+
+
+
+
+
+
+    {% else %}
+        <small><a href="/">Login</a> to view this page</small>
+    {% endif %}
+
+{% endblock %}

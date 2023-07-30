@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+
+{% block title%}
+products
+{% endblock %}
+
+
+{% block content%}
+    {% if user.is_authenticated %}
+        <h1>{{one_product}}</h1>
+        <table class="table table-striped">
+            <tbody>
+            <tr><td><strong>Category: </strong>{{one_product.category}}</td></tr>
+            <tr><td><strong>Brand: </strong>{{one_product.brand}}</td></tr>
+            <tr><td><strong>Name: </strong>{{one_product}}</td></tr>
+            <tr><td><strong>Quantity: </strong>{{one_product.quantity}}</td></tr>
+            <tr><td><strong>Price: </strong>{{one_product.price}}</td></tr>
+            <tr><td><strong>Sellers: </strong></br><ul>{% for seller in one_product.seller.all %}<li><a href="/oneseller/{{seller.id}}">{{ seller }}</a></li>{% endfor %}</ul></td></tr>
+            <tr><td class="text-break"><strong>Description: </strong></br>{{one_product.description}}</td></tr>
+            {% if user.is_superuser %}<tr><td><strong>Added by: </strong>{{one_product.added_by}}</td></tr>
+            <tr><td><strong>Status: </strong>{{one_product.status}}</td></tr>{% endif %}
+            </tbody>
+        </table>
+        {% if user.is_superuser %}
+        {% if one_product.status == one_product.NADMIN %}
+            <a href="{% url 'approve_product' one_product.id %}", class="btn btn-primary">Approve</a>
+        {% endif %}
+		<a href="{% url 'edit_product' one_product.id %}", class="btn btn-secondary">Edit</a>
+
+		<a href="{% url 'delete_product' one_product.id %}", class="btn btn-danger">Delete</a>
+        {% endif %}
+		<a href="{% url 'products' %}", class="btn btn-secondary">Back to list</a>
+	{% else %}
+        <small><a href="/">Login</a> to view this page</small>
+    {% endif %}
+
+{% endblock %}

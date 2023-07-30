@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% block title%}
+sellers
+{% endblock %}
+
+
+{% block content%}
+    {% if user.is_authenticated %}
+        <h1>{{one_seller}}</h1>
+
+        <table class="table table-striped">
+            <tbody>
+            <tr><td><strong>Name: </strong>{{one_seller.email}}</td></tr>
+            <tr><td><strong>Phone number: </strong>{{one_seller.phones_number}}</td></tr>
+            <tr><td><strong>Added at: </strong>{{one_seller.added}}</td></tr>
+            </tbody>
+        </table>
+        {% if user.is_superuser %}
+		<a href="{% url 'edit_seller' one_seller.id %}", class="btn btn-secondary">Edit</a>
+		<a href="{% url 'delete_seller' one_seller.id %}", class="btn btn-danger">Delete</a>
+        {% endif %}
+		<a href="{% url 'sellers' %}", class="btn btn-secondary">Back to list</a>
+	{% else %}
+        <small><a href="/">Login</a> to view this page</small>
+    {% endif %}
+
+{% endblock %}

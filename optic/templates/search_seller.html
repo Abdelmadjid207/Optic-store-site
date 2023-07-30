@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+
+{% block title%}
+Searching for seller
+{% endblock %}
+
+{% block content%}
+    {% if user.is_authenticated %}
+    <h1>Sellers: Search Results</h1>
+	<form class="d-flex" method="POST" action="{% url 'search_seller' %}">
+	  {% csrf_token %}
+	  <input class="form-control me-2" type="search" placeholder="Search for a seller" aria-label="Search" name="searchbar">
+	  <button class="btn btn-secondary">Search</button>
+	</form>
+	</br></br>
+        {% if searchbar %}
+			<table class="table table-hover">
+				<thead class="thead-dark"><th><h3>for {{ searchbar }}</h3></th></thead>
+					<tbody>
+						
+						{% for seller in ss_resultf %}
+							<tr><td><a href="/oneseller/{{seller.id}}">{{ seller }}</a></td></tr>
+						{% endfor %}
+						{% for seller in ss_resultl %}
+							<tr><td><a href="/oneseller/{{seller.id}}">{{ seller }}</a></td></tr>
+						{% endfor %}
+					</tbody>
+        {% else %}
+            <h3>You didn't search for a thing, <a href="/sellers">Back</a></h3>
+        {% endif %}
+        
+
+
+
+
+
+
+
+    {% else %}
+        <small><a href="/">Login</a> to view this page</small>
+    {% endif %}
+
+{% endblock %}

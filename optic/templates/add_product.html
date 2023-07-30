@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% block title%}
+Add a new product
+{% endblock %}
+
+
+{% block content%}
+{% if user.is_authenticated %}
+    <h1>Add a new product</h1>
+    <form method="POST" action="{% url 'add_product' %}">
+        {% csrf_token %}
+        {% if form.errors %}
+        <div class="alert alert-secondary alert-dismissible fade show" role="alert">
+            There's an error. Check the informations you entered and try again.
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        {% endif %}
+
+        {{form.as_p}}
+    
+        <button type="submit" class="btn btn-dark">Add</button>
+        <a href="{% url 'products' %}", class="btn btn-secondary">Cancel</a>
+    </form>
+{% else %}
+<small><a href="/">Login</a> to view this page</small>
+{% endif %}
+
+{% endblock %}

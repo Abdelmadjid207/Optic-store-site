@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+
+{% block title%}
+sellers
+{% endblock %}
+
+{% load static %}
+
+{% block content%}
+{% if user.is_authenticated %}
+	<div class="container animate">
+		<h1 style="position: absolute; text-align: left; color: #000000;">Sellers</h1>
+		<img src='{% static "seller.png" %}' style="width: 100%; height: 50px; object-fit: cover;" alt="Responsive image">
+		
+	</div>
+	</br>
+	{% if user.is_superuser %}
+	<a href="{% url 'add_seller' %}", class="btn btn-secondary">Add a new seller</a>
+	{% endif %}
+	</br></br>
+	<form class="d-flex" method="POST" action="{% url 'search_seller' %}">
+	  {% csrf_token %}
+	  <input class="form-control me-2" type="search" placeholder="Search for a seller" aria-label="Search" name="searchbar">
+	  <button class="btn btn-secondary">Search</button>
+	</form>
+	</br></br>
+	<table class="table table-hover">
+		<thead class="thead-dark">
+		  <tr>
+			<th scope="col">Name</th>
+			<th scope="col">Email</th>
+			<th scope="col">Phone number</th>
+			<th scope="col">Date added</th>
+		  </tr>
+		</thead>
+		<tbody>
+		{% if sellers %}
+			{% for seller in sellers %}
+				<tr>
+					<th scope="row" class="animate pop delay-1"><a href="/oneseller/{{seller.id}}">{{ seller }}</a></th>
+					<td class="animate pop delay-2">{{ seller.email }}</td>
+					<td class="animate pop delay-3">{{ seller.phones_number }}</td>
+					<td class="animate pop delay-4">{{ seller.added }}</td>
+				</tr>
+			{% endfor %}
+		{% endif %}
+		</tbody>
+		</table> 
+{% else %}
+<small><a href="/">Login</a> to view this page</small>
+{% endif %}
+
+{% endblock %}

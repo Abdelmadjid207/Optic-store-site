@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+
+{% block title%}Client's cart{% endblock %}
+
+{% load static %}
+
+{% block content%}
+{% if user.is_authenticated %}
+	<div class="container">
+		<h1 style="position: absolute; text-align: left; color: #483568;">{{ client }}'s cart</h1>
+		<img src='{% static "cart.png" %}' style="width: 100%; height: 50px; object-fit: cover;" alt="Responsive image">
+		
+	</div>
+	</br>
+	<form method="post" action="#">
+		<table class="table table-hover">
+			<thead class="thead-dark"><tr>
+				<th>Product name</th>
+				<th>Quantity</th>
+				<th></th>
+			</tr></thead>
+				<tbody>
+					{% for cart in client.cart_set.all %}
+						<tr>
+							<td>{{ cart.product }}</td>
+							<td>{{ cart.i_quantity }}</td>
+							<td><button type="submit", name="delete", value="{{cart.id}}" class="btn btn-danger">Delete</button></td>
+						</tr>
+					{% endfor %}
+				</tbody>
+		</table>
+		</br>
+		
+		<form class="d-flex">
+			
+			{% csrf_token %}
+			<input class="form-control me-2" type="search" placeholder="Enter Barcode" aria-label="Search" name="prod">
+			</br>
+			<select class="form-control me-2" name="prodn">
+					<option value="0">Or choose product name (If you're not using barcode)</option>
+				{% for product in products %}
+					<option value="{{ product }}">{{ product }}</option>
+				{% endfor %}
+			</select>
+			</br>
+			<input class="form-control me-2" type="search" placeholder="Enter details for the product. Ex: Color ... etc" aria-label="Search" name="prodd">
+			</br>
+			<input class="form-control me-2" placeholder="Enter quantity" name="prodq">
+			</br>
+			<button type="submit", name="newcart", value="newcart" class="btn btn-secondary">Add product to {{ client }}'s cart</button>
+			<a href="/checkout/{{client.id}}", class="btn btn-secondary">Checkout</a>
+			<a href="/oneclient/{{client.id}}", class="btn btn-secondary">Back to Client profile</a>
+		</form>
+		
+	</form>
+	{% else %}
+		<small><a href="/">Login</a> to view this page if you're an admin</small>
+		{% endif %}	
+{% endblock %}

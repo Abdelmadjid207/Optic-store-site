@@ -1,0 +1,79 @@
+{% extends 'base.html' %}
+
+{% block title%}List of categories{% endblock %}
+
+{% load static %}
+
+{% block content%}
+{% if user.is_authenticated %}
+	<div class="container">
+		<h1 style="position: absolute; text-align: left; color: #000000;">Categories</h1>
+		<img src='{% static "category.png" %}' style="width: 100%; height: 50px; object-fit: cover;" alt="Responsive image">
+		
+	</div>
+	</br>
+	<form method="post" action="#">
+
+		{% csrf_token %}
+		<input class="form-control me-2" type="search" placeholder="Enter new category" aria-label="Search" name="category">
+		<button type="submit", name="newcategory", value="newcategory" class="btn btn-secondary">Add new category</button>
+		<p>When you're done adding, Click at Home in the sidebar</p>
+		</br></br>
+		{% if user.is_superuser %}
+		<table class="table table-hover">
+			<thead class="thead-dark"><tr>
+				<th>Categoies added by a non admin user</th>
+				<th></th>
+				<th></th>
+			</tr></thead>
+				<tbody>
+					{% for category in categories %} {% if category.status == category.NADMIN %}
+						<tr>
+							<td>{{ category.name }}</td>
+							<td><button type="submit", name="delete", value="{{category.id}}" class="btn btn-danger">Delete</button></td>
+							<td><button type="submit", name="approve", value="{{category.id}}" class="btn btn-primary">Approve</button></td>
+						</tr>
+						{% endif %}
+					{% endfor %}
+				</tbody>
+		</table>
+		<table class="table table-hover">
+			<thead class="thead-dark"><tr>
+				<th>Approved categories</th>
+				{% if user.is_superuser %}<th></th>{% endif %}
+			</tr></thead>
+				<tbody>
+					{% for category in categories %} {% if category.status == category.ADMIN %}
+						<tr>
+							<td>{{ category.name }}</td>
+							{% if user.is_superuser %}<td><button type="submit", name="delete", value="{{category.id}}" class="btn btn-danger">Delete</button></td>{% endif %}
+						</tr>
+						{% endif %}
+					{% endfor %}
+				</tbody>
+		</table>
+		{% else %}
+		<table class="table table-hover">
+			<thead class="thead-dark"><tr>
+				<th>Categories</th>
+			</tr></thead>
+				<tbody>
+					{% for category in categories %}
+						<tr>
+							<td>{{ category.name }}</td>
+							
+						</tr>
+					{% endfor %}
+				</tbody>
+		</table>
+		{% endif %}
+		</br>
+
+
+			
+
+	</form>	
+	{% else %}
+		<small><a href="/">Login</a> To view this page if you have to login</small>
+		{% endif %}
+{% endblock %}
